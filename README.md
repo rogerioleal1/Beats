@@ -1,2 +1,0 @@
-########
-Beats Metrônomo
