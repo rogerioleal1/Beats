@@ -13,25 +13,20 @@ class App extends PureComponent {
         beats: 60,
         count: 1,
         isStarted: false,
-        beatsPerMeasure: 4,
     }
 
     componentDidMount() {
-        this.sound = new Sound('click1.wav', Sound.MAIN_BUNDLE, error => {
-            if (error) {
-                alert(JSON.stringify(error))
-            }
-        })
 
-        this.sound2 = new Sound('click2.wav', Sound.MAIN_BUNDLE, error => {
-            if (error) {
-                alert(JSON.stringify(error))
-            }
-        })
+        const callback = error => { 
+            if (error) alert(JSON.stringify(error))
+        }
+
+        this.beep1 = new Sound('click1.wav', Sound.MAIN_BUNDLE, callback)
+        this.beep2 = new Sound('click2.wav', Sound.MAIN_BUNDLE, callback)
     }
 
     handleBeats = beats => {
-        clearInterval(this.beep)
+        clearInterval(this.startBeep)
 
         this.setState({ 
             beats,
@@ -45,9 +40,7 @@ class App extends PureComponent {
     decreaseBeats = () => this.handleBeats(this.state.beats - 1)
 
     play = () => {
-        const { count } = this.state
-
-        count == 1 ? this.sound2.play() : this.sound.play()
+        this.state.count == 1 ? this.beep2.play() : this.beep1.play()
 
         this.setState(state => ({
             count: state.count == 4 ? 1 : state.count + 1 
@@ -55,7 +48,7 @@ class App extends PureComponent {
     }
 
     pause() {
-        clearInterval(this.beep)
+        clearInterval(this.startBeep)
         this.setState({ count: 1, isStarted: false })
     }
 
@@ -67,7 +60,7 @@ class App extends PureComponent {
                 return false
             }
                 
-            this.beep = setInterval(this.play, (60 / this.state.beats) * 1000)
+            this.startBeep = setInterval(this.play, (60 / this.state.beats) * 1000)
         })
     }
 
