@@ -1,3 +1,3 @@
-########
-Beats Metrônomo
-########
+###################
+Beats - Metrônomo em React Native
+###################
